@@ -3,13 +3,15 @@
 #include "NeuralNetwork.h"
 #include <time.h>
 #include <windows.h>
+#include <fstream>
 
 using namespace std;
 
 int main()
 {
 	srand(time(NULL));
-
+	ofstream outFile;
+	outFile.open("export.txt");
 	const int learning_base = 4;
 	fstream file("Input.txt", ios_base::in);
 
@@ -44,6 +46,7 @@ int main()
 			brain.Backpropagation(learning[j], answer[j]);
 			Matrix showTrain = brain.Feedforward(learning[j]);
 			showTrain.wyswietl();
+			showTrain.toFile(outFile);
 		}
 	}
 

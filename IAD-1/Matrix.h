@@ -17,6 +17,7 @@ public:
 	Matrix(int rows, int cols, string filename, int skipInputs);
 	~Matrix();
 	void wyswietl();
+	void toFile(ofstream & plik);
 	void map(double(*f)(double));
 	Matrix operator*(double s);
 	Matrix operator*(Matrix _m);

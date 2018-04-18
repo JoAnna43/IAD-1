@@ -1,6 +1,7 @@
 #include "Matrix.h"
 #include <vector>
 #include <iostream>
+#include <sstream>
 
 
 #include "Matrix.h"
@@ -75,6 +76,26 @@ void Matrix::wyswietl()
 		}
 		cout << "\n";
 	}
+}
+
+void Matrix::toFile(ofstream& plik)
+{
+	std::string string2 = "";
+	for (int i = 0; i < values.size(); i++)
+	{
+		std::string str = "";
+		for (int j = 0; j < values[i].size(); j++)
+		{
+			std::ostringstream strs;
+			strs << values[i][j];
+			str.append(strs.str());
+
+		}
+		string2.append(" ");
+		string2.append(str);
+	}
+	plik << string2;
+	plik << "\n";
 }
 
 Matrix::Matrix(vector<vector<double>> vector) : values(vector)
