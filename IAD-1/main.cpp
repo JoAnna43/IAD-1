@@ -43,8 +43,8 @@ int main()
 	{
 		for (int j = 0; j < 4; j++)
 		{
-			brain.Backpropagation(learning[j], answer[j]);
-			Matrix showTrain = brain.Feedforward(learning[j]);
+			brain.Backpropagation(learning[2], answer[2]);
+			Matrix showTrain = brain.Feedforward(learning[2]);
 			showTrain.wyswietl();
 			showTrain.toFile(outFile);
 		}
@@ -56,7 +56,6 @@ int main()
 		answer[i].wyswietl();
 		output.wyswietl();
 	}
-
 	system("pause");
 	return 0;
 }

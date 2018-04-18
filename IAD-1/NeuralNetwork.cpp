@@ -1,5 +1,6 @@
 #include "NeuralNetwork.h"
 #include <cmath>
+#include <iostream>
 
 double f_aktywacyjna(double a)
 {
@@ -56,21 +57,21 @@ Matrix NeuralNetwork::Feedforward(Matrix input)
 
 	return output;
 }
-
-//Matrix NeuralNetwork::Error(Matrix[] input, Matrix[] answer, int size)
-//{
-//	vector<vector<double>> errors;
-//	Matrix error = answer[0];
-//	error = error * 0;			//init of empty matrix with right size
-//	for (int i = 0; i < size; i++)
-//	{
-//		Matrix target = answer[i];
-//		Matrix result = Feedforward(input[i]);
-//		error = error + (target - result) * (target - result);
-//	}
-//	error = error * (1.0 / size);
-//	return error;
-//}
+//
+Matrix NeuralNetwork::Error(Matrix input[], Matrix answer[], int size)
+{
+	vector<vector<double>> errors;
+	Matrix error = answer[0];
+	error = error * 0;			//init of empty matrix with right size
+	for (int i = 0; i < size; i++)
+	{
+		Matrix target = answer[i];
+		Matrix result = Feedforward(input[i]);
+		error = error + (target - result) * (target - result);
+	}
+	error = error * (1.0 / size);
+	return error;
+}
 
 void NeuralNetwork::Backpropagation(Matrix input, Matrix answer)
 {
