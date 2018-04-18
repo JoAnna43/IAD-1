@@ -24,8 +24,6 @@ private:
 	double learningRate = 0.5;
 	double momentum = 0.1;
 
-	vector<Matrix> input, answer;
-
 public:
 	NeuralNetwork(int input, int hidden, int output);
 	~NeuralNetwork();

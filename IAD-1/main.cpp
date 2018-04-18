@@ -33,7 +33,7 @@ int main()
 		answer.push_back(temp);
 	}
 	file.close();
-	
+
 	learning[0].wyswietl();
 	answer[0].wyswietl();
 

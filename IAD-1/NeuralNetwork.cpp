@@ -91,10 +91,14 @@ void NeuralNetwork::Backpropagation(Matrix input, Matrix answer)
 
 	//calculate the output error 
 	Matrix outputError = answer - output;
-
+	cout << "outputError"<<endl;
+	outputError.wyswietl();
+	
 	//calculate hidden layer errors
 	Matrix weightsOHt = weightsOH.transpose();
 	Matrix hiddenErrors = weightsOHt * outputError;
+	cout << "hiddenErrors"<<endl;
+	hiddenErrors.wyswietl();
 
 	//calculate gradient
 	Matrix gradient = output;
@@ -102,21 +106,31 @@ void NeuralNetwork::Backpropagation(Matrix input, Matrix answer)
 	{
 		gradient.map(pochodna);
 		gradient = (gradient * outputError) * learningRate;
+		cout << "gradient"<<endl;
+		gradient.wyswietl();
 	}
 	else gradient = outputError * learningRate;
+	cout << "gradient" << endl;
+	gradient.wyswietl();
 
 	// Delta weightsOutputHidden
 	Matrix hiddenT = hidden.transpose();
 	deltaWeightsOH = (gradient * hiddenT) + (deltaWeightsOH * momentum);
+	cout << "deltaWeightsOH" << endl;
+	deltaWeightsOH.wyswietl();
 
 	//Adjust weightsOH by delta
 	weightsOH = weightsOH + deltaWeightsOH;
+	cout << "weightsOH" << endl;
+	weightsOH.wyswietl();
 
 	//Adjust the output layer bias
 	if (usingBias)
 	{
 		deltaBiasO = gradient + (deltaBiasO * momentum);
 		biasO = biasO + deltaBiasO;
+		cout << "biasO" << endl;
+		biasO.wyswietl();
 	}
 
 	// calculate hidden gradient
@@ -125,21 +139,31 @@ void NeuralNetwork::Backpropagation(Matrix input, Matrix answer)
 	{
 		gradientHidden.map(pochodna);
 		gradientHidden = (gradientHidden * hiddenErrors) * learningRate;
+		cout << "gradientHidden" << endl;
+		gradientHidden.wyswietl();
 	}
 	else gradient = hiddenErrors * learningRate;
+	cout << "gradientHidden" << endl;
+	gradientHidden.wyswietl();
 
 	//calculate inputs->hidden deltas
 	Matrix inputT = input.transpose();
 	deltaWeightsHI = (gradientHidden * inputT) + (deltaWeightsHI * momentum);
-	
+	cout << "deltaWeightsHI" << endl;
+	deltaWeightsHI.wyswietl();
+
 	//Adjust weightsHI by delta
 	weightsHI = weightsHI * deltaWeightsHI;
-	
+	cout << "weightsHI" << endl;
+	weightsHI.wyswietl();
+
 	//Adjust hidden layer bias
 	if (usingBias)
 	{
 		deltaBiasH = gradientHidden + (deltaBiasH * momentum);
 		biasH = biasH + deltaBiasH;
+		cout << "biasH" << endl;
+		biasH.wyswietl();
 	}
 
 
