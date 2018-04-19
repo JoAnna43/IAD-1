@@ -1,11 +1,15 @@
 #include <iostream>
 #include "Matrix.h"
 #include "NeuralNetwork.h"
+#include "Losowanie.h"
 #include <time.h>
 #include <windows.h>
 #include <fstream>
+#include <cstdlib>
+#include <ctime>
 
 using namespace std;
+
 
 int main()
 {
@@ -39,14 +43,28 @@ int main()
 
 	NeuralNetwork brain(4, 1, 4);
 
-	for (int i = 0; i < 5; i++)
+	int wylosowane[4];
+	int wylosowanych = 0;
+	
+	for (int i = 0; i < 10000; i++)
 	{
+		do
+		{
+			Losowanie losuj;
+			int liczba = losuj.wylosuj();
+			if (losuj.czyBylaWylosowana(liczba, wylosowane, wylosowanych) == false)
+			{
+				wylosowane[wylosowanych] = liczba;
+				wylosowanych++;
+			} 
+		} while (wylosowanych < 4);
+
 		for (int j = 0; j < 4; j++)
 		{
-			brain.Backpropagation(learning[2], answer[2]);
-			Matrix showTrain = brain.Feedforward(learning[2]);
-			showTrain.wyswietl();
-			showTrain.toFile(outFile);
+			brain.Backpropagation(learning[wylosowane[j]], answer[wylosowane[j]]);
+			//Matrix showTrain = brain.Feedforward(learning[wylosowane[j]]);
+			//showTrain.wyswietl();
+			//showTrain.toFile(outFile);
 		}
 	}
 
@@ -56,6 +74,20 @@ int main()
 		answer[i].wyswietl();
 		output.wyswietl();
 	}
+	
+	//brain.Error(learning, answer, 4);
+	vector<vector<double>> errors;
+	Matrix error = answer[0];
+	error = error * 0;			//init of empty matrix with right size
+	for (int i = 0; i < 4; i++)
+	{
+		Matrix target = answer[i];
+		Matrix result = brain.Feedforward(learning[i]);
+		error = error + (target - result) * (target - result);
+	}
+	error = error * (1.0 / 4);
+	cout << "Blad MSE" << endl;
+	error.wyswietl();
 	system("pause");
 	return 0;
 }
