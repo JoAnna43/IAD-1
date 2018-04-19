@@ -43,6 +43,7 @@ int main()
 
 	int wylosowane[4];
 	int wylosowanych = 0;
+<<<<<<< HEAD
 	int qqq = 0;
 	for (int i = 0; i < 5; i++)
 	{
@@ -51,6 +52,11 @@ int main()
 		if (qqq % 500 == 0)
 			cout << qqq << endl;
 		wylosowanych = 0;
+=======
+	
+	for (int i = 0; i < 10000; i++)
+	{
+>>>>>>> 323f41fb6909ffdb052eaad832e2f0df7db6284c
 		do
 		{
 			Losowanie losuj;
@@ -66,7 +72,11 @@ int main()
 		{
 			brain.Backpropagation(learning[wylosowane[j]], answer[wylosowane[j]]);
 			//Matrix showTrain = brain.Feedforward(learning[wylosowane[j]]);
+<<<<<<< HEAD
 			//showTrain.print();
+=======
+			//showTrain.wyswietl();
+>>>>>>> 323f41fb6909ffdb052eaad832e2f0df7db6284c
 			//showTrain.toFile(outFile);
 		}
 	}
@@ -88,9 +98,26 @@ int main()
 		Matrix result = brain.Feedforward(learning[i]);
 		error = error + (target - result) * (target - result);
 	}
+<<<<<<< HEAD
 	error = error * (1.0 / 4);
 	cout << "Blad MSE" << endl;
 	error.print();
+=======
+	
+	//brain.Error(learning, answer, 4);
+	vector<vector<double>> errors;
+	Matrix error = answer[0];
+	error = error * 0;			//init of empty matrix with right size
+	for (int i = 0; i < 4; i++)
+	{
+		Matrix target = answer[i];
+		Matrix result = brain.Feedforward(learning[i]);
+		error = error + (target - result) * (target - result);
+	}
+	error = error * (1.0 / 4);
+	cout << "Blad MSE" << endl;
+	error.wyswietl();
+>>>>>>> 323f41fb6909ffdb052eaad832e2f0df7db6284c
 	system("pause");
 	return 0;
 }
