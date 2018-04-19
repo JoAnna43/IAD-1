@@ -22,18 +22,14 @@ NeuralNetwork::NeuralNetwork(int input, int hidden, int output) : input(input), 
 	weightsOH = Matrix(output, hidden);
 	weightsHI = Matrix(hidden, output);
 
-	deltaWeightsHI = Matrix(hidden,input);
-	deltaWeightsHI = deltaWeightsHI * 0;
-	deltaWeightsOH = Matrix(output, hidden);
-	deltaWeightsOH = deltaWeightsOH * 0;
+	deltaWeightsHI = ( Matrix(hidden,input) );
+	deltaWeightsOH = ( Matrix(output, hidden) );
 
-	biasH = Matrix(hidden, 1);
-	biasO = Matrix(output, 1);
+	biasH = ( Matrix(hidden, 1) );
+	biasO = ( Matrix(output, 1) );
 
-	deltaBiasH = Matrix(hidden, 1);
-	deltaBiasH = deltaBiasH * 0;
-	deltaBiasO = Matrix(output, 1);
-	deltaBiasO = deltaBiasO * 0;
+	deltaBiasH = (Matrix(hidden, 1) );
+	deltaBiasO = (Matrix(output, 1) );
 
 }
 
@@ -44,61 +40,63 @@ NeuralNetwork::~NeuralNetwork()
 
 Matrix NeuralNetwork::Feedforward(Matrix input)
 {
-	
-	Matrix hidden = (weightsHI * input);
+	Matrix temp = (weightsHI * input);
+	Matrix hidden = temp;
 	if (usingBias)
+	{
 		hidden = hidden + biasH;
-	hidden.map(f_aktywacyjna);
+	}
+	if (!lineral)
+	{
+		hidden.map(f_aktywacyjna);
+	}
 
-	Matrix output = (weightsOH * hidden);
+	Matrix temp2 = (weightsOH * hidden);
+	Matrix output = temp2;
 	if (usingBias)
+	{
 		output = output + biasO;
-	output.map(f_aktywacyjna);
+	}
+	if (!lineral)
+	{
+		output.map(f_aktywacyjna);
+	}
 
 	return output;
 }
-//
-Matrix NeuralNetwork::Error(Matrix input[], Matrix answer[], int size)
-{
-	vector<vector<double>> errors;
-	Matrix error = answer[0];
-	error = error * 0;			//init of empty matrix with right size
-	for (int i = 0; i < size; i++)
-	{
-		Matrix target = answer[i];
-		Matrix result = Feedforward(input[i]);
-		error = error + (target - result) * (target - result);
-	}
-	error = error * (1.0 / size);
-	return error;
-}
+
 
 void NeuralNetwork::Backpropagation(Matrix input, Matrix answer)
 {
 	//Feedforward Start
-	Matrix hidden = (weightsHI * input);
+	Matrix temp = (weightsHI * input);
+	Matrix hidden = temp;
 	if (usingBias)
+	{
 		hidden = hidden + biasH;
-	if(!lineral)
-	hidden.map(f_aktywacyjna);
-
-	Matrix output = (weightsOH * hidden);
-	if (usingBias)
-		output = output + biasO;
+	}
 	if (!lineral)
-	output.map(f_aktywacyjna);
+	{
+		hidden.map(f_aktywacyjna);
+	}
+
+	Matrix temp2 = (weightsOH * hidden);
+	Matrix output = temp2;
+	if (usingBias)
+	{
+		output = output + biasO;
+	}
+	if (!lineral)
+	{
+		output.map(f_aktywacyjna);
+	}
 	//Feedforward End
 
-	//calculate the output error 
+	//Calculate the output error 
 	Matrix outputError = answer - output;
-	cout << "outputError"<<endl;
-	outputError.wyswietl();
-	
-	//calculate hidden layer errors
-	Matrix weightsOHt = weightsOH.transpose();
-	Matrix hiddenErrors = weightsOHt * outputError;
-	cout << "hiddenErrors"<<endl;
-	hiddenErrors.wyswietl();
+
+	//Calculate hidden layer errors
+	Matrix hiddenErrors = weightsOH.transpose() * outputError;
 
 	//calculate gradient
 	Matrix gradient = output;
@@ -106,31 +104,23 @@ void NeuralNetwork::Backpropagation(Matrix input, Matrix answer)
 	{
 		gradient.map(pochodna);
 		gradient = (gradient * outputError) * learningRate;
-		cout << "gradient"<<endl;
-		gradient.wyswietl();
 	}
-	else gradient = outputError * learningRate;
-	cout << "gradient" << endl;
-	gradient.wyswietl();
+	else
+	{
+		gradient = outputError * learningRate;
+	}
 
 	// Delta weightsOutputHidden
-	Matrix hiddenT = hidden.transpose();
-	deltaWeightsOH = (gradient * hiddenT) + (deltaWeightsOH * momentum);
-	cout << "deltaWeightsOH" << endl;
-	deltaWeightsOH.wyswietl();
+	deltaWeightsOH = (gradient * hidden.transpose()) + (deltaWeightsOH * momentum);
 
 	//Adjust weightsOH by delta
 	weightsOH = weightsOH + deltaWeightsOH;
-	cout << "weightsOH" << endl;
-	weightsOH.wyswietl();
 
 	//Adjust the output layer bias
 	if (usingBias)
 	{
 		deltaBiasO = gradient + (deltaBiasO * momentum);
 		biasO = biasO + deltaBiasO;
-		cout << "biasO" << endl;
-		biasO.wyswietl();
 	}
 
 	// calculate hidden gradient
@@ -139,33 +129,23 @@ void NeuralNetwork::Backpropagation(Matrix input, Matrix answer)
 	{
 		gradientHidden.map(pochodna);
 		gradientHidden = (gradientHidden * hiddenErrors) * learningRate;
-		cout << "gradientHidden" << endl;
-		gradientHidden.wyswietl();
 	}
-	else gradient = hiddenErrors * learningRate;
-	cout << "gradientHidden" << endl;
-	gradientHidden.wyswietl();
+	else
+	{
+		gradient = hiddenErrors * learningRate;
+	}
 
 	//calculate inputs->hidden deltas
-	Matrix inputT = input.transpose();
-	deltaWeightsHI = (gradientHidden * inputT) + (deltaWeightsHI * momentum);
-	cout << "deltaWeightsHI" << endl;
-	deltaWeightsHI.wyswietl();
+	deltaWeightsHI = (gradientHidden * input.transpose()) + (deltaWeightsHI * momentum);
 
 	//Adjust weightsHI by delta
-	weightsHI = weightsHI * deltaWeightsHI;
-	cout << "weightsHI" << endl;
-	weightsHI.wyswietl();
+	weightsHI = weightsHI + deltaWeightsHI;
 
 	//Adjust hidden layer bias
 	if (usingBias)
 	{
 		deltaBiasH = gradientHidden + (deltaBiasH * momentum);
 		biasH = biasH + deltaBiasH;
-		cout << "biasH" << endl;
-		biasH.wyswietl();
 	}
-
-
 }
 

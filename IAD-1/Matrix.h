@@ -8,23 +8,23 @@ using namespace std;
 
 class Matrix
 {
-public:
+private:
 	vector<vector<double>> values;
+public:
 	Matrix();
-	Matrix(int rows, int cols);
-	Matrix(const Matrix &_m);
-	Matrix(vector<vector<double>> yes);
-	Matrix(int rows, int cols, string filename, int skipInputs);
-	~Matrix();
-	void wyswietl();
-	void toFile(ofstream & plik);
-	void map(double(*f)(double));
-	Matrix operator*(double s);
-	Matrix operator*(Matrix _m);
-	Matrix operator+(double s);
-	Matrix operator+(Matrix _m);
-	Matrix operator-(double s);
-	Matrix operator-(Matrix _m);
+	Matrix(vector<vector<double>>);
+	Matrix(int , int );
+	Matrix(const Matrix&);
+	Matrix(int , int , string , int );
+
+	void print();
+	void toFile(ofstream &);
+
+	void map(double(*)(double));
+	Matrix operator*(double);
+	Matrix operator*(Matrix );
+	Matrix operator+(Matrix);
+	Matrix operator-(Matrix);
 	Matrix transpose();
 };
 
