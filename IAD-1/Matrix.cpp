@@ -47,13 +47,8 @@ Matrix::Matrix(int rows, int cols)
 		vector<double> rows;
 		for (int j = 0; j < cols; j++)
 		{
-<<<<<<< HEAD
 			float temp = ((((float)rand() / RAND_MAX) * (1 - (-1))) + (-1));
 			rows.push_back(temp);
-=======
-			float r3 = (-1) + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (1 - (-1))));
-			temp.push_back(r3);        //Init with random number from -1.0 to 1.0
->>>>>>> 323f41fb6909ffdb052eaad832e2f0df7db6284c
 		}
 		values.push_back(rows);
 	}

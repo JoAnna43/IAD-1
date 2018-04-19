@@ -5,20 +5,12 @@
 
 Losowanie::Losowanie()
 {
-<<<<<<< HEAD
 
 }
 
 Losowanie::~Losowanie()
 {
 
-=======
-}
-
-
-Losowanie::~Losowanie()
-{
->>>>>>> 323f41fb6909ffdb052eaad832e2f0df7db6284c
 }
 
 bool Losowanie::czyBylaWylosowana(int iLiczba, int tab[], int ile)
