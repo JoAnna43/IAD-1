@@ -21,8 +21,8 @@ private:
 	Matrix deltaBiasO;
 	Matrix deltaBiasH;
 
-	double learningRate = 0.9;
-	double momentum = 0.5;
+	double learningRate = 0.7;
+	double momentum = 0.0;
 
 public:
 	NeuralNetwork(int input, int hidden, int output);

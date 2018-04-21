@@ -11,6 +11,28 @@
 using namespace std;
 
 
+double printError(vector<Matrix> answer, vector<Matrix> learning, NeuralNetwork brain)
+{
+	vector<vector<double>> errors;
+	Matrix error = answer[0];
+	error = error * 0;			//init of empty matrix with right size
+	for (int i = 0; i < 4; i++)
+	{
+		Matrix target = answer[i];
+		Matrix result = brain.Feedforward(learning[i]);
+		error = error + (target - result) * (target - result);
+	}
+	double errorek = 0.0;
+	for (int i = 0; i < 4; i++)
+	{
+		errorek += error.values[i][0];
+	}
+	errorek = errorek * (1.0 / 4);
+	cout << "Blad MSE : ";
+	cout << errorek << endl;
+	return errorek;
+}
+
 int main()
 {
 	srand(time(NULL));
@@ -39,17 +61,13 @@ int main()
 	file.close();
 
 
-	NeuralNetwork brain(4, 4, 4);
+	NeuralNetwork brain(4, 2, 4);
 
 	int wylosowane[4];
 	int wylosowanych = 0;
 	int qqq = 0;
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 10; i++)
 	{
-		
-		qqq++;
-		if (qqq % 500 == 0)
-			cout << qqq << endl;
 		wylosowanych = 0;
 		do
 		{
@@ -65,32 +83,25 @@ int main()
 		for (int j = 0; j < 4; j++)
 		{
 			brain.Backpropagation(learning[wylosowane[j]], answer[wylosowane[j]]);
-			//Matrix showTrain = brain.Feedforward(learning[wylosowane[j]]);
+			
+		}
+		//Matrix showTrain = brain.Feedforward(learning[wylosowane[j]]);
 			//showTrain.print();
 			//showTrain.toFile(outFile);
-		}
+			outFile << " ";
+			outFile << i;
+			outFile << " ";
+			outFile << printError(answer, learning, brain);
+			outFile << "\n";
+
 	}
 
 	for (int i = 0; i < 4; i++)
 	{
 		Matrix output = brain.Feedforward(answer[i]);
 		answer[i].print();
-		output.print();
 	}
-	
-	//brain.Error(learning, answer, 4);
-	vector<vector<double>> errors;
-	Matrix error = answer[0];
-	error = error * 0;			//init of empty matrix with right size
-	for (int i = 0; i < 4; i++)
-	{
-		Matrix target = answer[i];
-		Matrix result = brain.Feedforward(learning[i]);
-		error = error + (target - result) * (target - result);
-	}
-	error = error * (1.0 / 4);
-	cout << "Blad MSE" << endl;
-	error.print();
+	outFile.close();
 	system("pause");
 	return 0;
 }

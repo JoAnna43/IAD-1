@@ -8,7 +8,7 @@ using namespace std;
 
 class Matrix
 {
-private:
+public:
 	vector<vector<double>> values;
 public:
 	Matrix();

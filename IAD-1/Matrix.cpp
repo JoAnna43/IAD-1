@@ -71,8 +71,10 @@ void Matrix::print()
 {
 	for (int i = 0; i < values.size(); i++)
 	{
+		int temp = values.size();
 		for (int j = 0; j < values[i].size(); j++)
 		{
+			temp = values[i].size();
 			cout << values[i][j] << " ";
 		}
 		cout << endl;
@@ -96,7 +98,7 @@ void Matrix::toFile(ofstream& plik)
 		string2.append(str);
 	}
 	plik << string2;
-	plik << "\n";
+	//plik << "\n";
 }
 
 void Matrix::map(double(*function)(double))
